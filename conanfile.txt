@@ -1,5 +1,6 @@
 [requires]
 fmt/9.1.0
+boost/1.81.0
 
 [generators]
 CMakeDeps
