@@ -5,7 +5,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED)
 
-set(SRCS src/main.cpp)
+set(HUFFMAN src/huffman/huffman.cpp)
+set(SRCS src/main.cpp ${HUFFMAN})
 
 add_executable(${PROJECT_NAME} ${SRCS})
 
