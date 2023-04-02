@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
-project(conan_template CXX)
+project(huffman CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(fmt REQUIRED)
+find_package(Boost REQUIRED)
 
 set(SRCS src/main.cpp)
 
@@ -15,4 +16,4 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME} fmt::fmt)
-
+target_link_libraries(${PROJECT_NAME} boost::boost)
