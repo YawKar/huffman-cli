@@ -50,6 +50,18 @@ void huffman::build_tree() {
   m_state = state::built_tree;
 }
 
+std::shared_ptr<huffman::node> huffman::get_tree_copy() {
+  std::function<std::shared_ptr<node>(std::shared_ptr<node>)> deep_copy =
+      [&deep_copy](std::shared_ptr<node> root) -> std::shared_ptr<node> {
+    if (root == nullptr) {
+      return nullptr;
+    }
+    return std::shared_ptr<node>(
+        new node(root->byte, root->frequency_sum, deep_copy(root->left_child), deep_copy(root->right_child)));
+  };
+  return deep_copy(m_root);
+}
+
 void huffman::compile_codebook() {
   std::bitset<255> current_code;
   std::function<void(std::shared_ptr<node>, uint8_t)> dive_compile_codebook =

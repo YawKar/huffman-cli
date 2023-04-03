@@ -9,6 +9,16 @@
 /// @brief Huffman algorithm implementation for an alphabet containing 256 variations of 1 byte.
 class huffman {
  public:
+  /// @brief A structure representing a node in the Huffman tree.
+  struct node {
+    node(uint8_t byte_, uint64_t frequency_sum_, std::shared_ptr<node> left_child_, std::shared_ptr<node> right_child_)
+        : byte(byte_), frequency_sum(frequency_sum_), left_child(left_child_), right_child(right_child_){};
+    uint8_t byte;
+    uint64_t frequency_sum;
+    std::shared_ptr<node> left_child;
+    std::shared_ptr<node> right_child;
+  };
+
   /// @brief Maximum possible code length in bits for this implementation.
   static const uint8_t MAX_CODE_LENGTH = 255;
 
@@ -34,6 +44,10 @@ class huffman {
 
   /// @brief Compiles a codebook that maps each byte to its corresponding variable-length Huffman code.
   void compile_codebook();
+
+  /// @brief Returns a deep copy of the Huffman tree.
+  /// @return A shared pointer to the root node of the copied tree.
+  std::shared_ptr<node> get_tree_copy();
 
   /// @brief Returns a copy of the input data vector.
   /// @return A copy of the input data vector.
@@ -64,15 +78,6 @@ class huffman {
     sorted_frequencies,
     built_tree,
     compiled_codebook
-  };
-
-  struct node {
-    node(uint8_t byte_, uint64_t frequency_sum_, std::shared_ptr<node> left_child_, std::shared_ptr<node> right_child_)
-        : byte(byte_), frequency_sum(frequency_sum_), left_child(left_child_), right_child(right_child_){};
-    uint8_t byte;
-    uint64_t frequency_sum;
-    std::shared_ptr<node> left_child;
-    std::shared_ptr<node> right_child;
   };
 
   struct node_comparator {
