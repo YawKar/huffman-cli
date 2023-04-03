@@ -9,10 +9,8 @@ namespace po = boost::program_options;
 
 std::string compile_help_message_header();
 std::string compile_version_message();
-void compress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose, bool dump,
-              const std::string& dump_filename);
-void decompress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose, bool dump,
-                const std::string& dump_filename);
+void compress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose);
+void decompress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose);
 po::options_description compile_options();
 
 int main(int argc, char* argv[]) {
@@ -45,9 +43,7 @@ int main(int argc, char* argv[]) {
       std::string output = vm["output"].as<std::string>();
       bool ignore_empty = vm.count("ignore-empty");
       bool verbose = vm.count("verbose");
-      bool dump = vm.count("dump-file");
-      std::string dump_filename = dump ? vm["dump-file"].as<std::string>() : "";
-      compress(input, output, ignore_empty, verbose, dump, dump_filename);
+      compress(input, output, ignore_empty, verbose);
     } catch (const std::runtime_error& e) {
       std::cout << e.what() << std::endl;
       std::cout << "Use --help to print a help message with the list of available options" << std::endl;
@@ -58,9 +54,7 @@ int main(int argc, char* argv[]) {
       std::string output = vm["output"].as<std::string>();
       bool ignore_empty = vm.count("ignore-empty");
       bool verbose = vm.count("verbose");
-      bool dump = vm.count("dump-file");
-      std::string dump_filename = dump ? vm["dump-file"].as<std::string>() : "";
-      decompress(input, output, ignore_empty, verbose, dump, dump_filename);
+      decompress(input, output, ignore_empty, verbose);
     } catch (const std::runtime_error& e) {
       std::cout << e.what() << std::endl;
       std::cout << "Use --help to print a help message with the list of available options" << std::endl;
@@ -101,13 +95,6 @@ po::options_description compile_options() {
        "print detailed information about the Huffman coding process, including the frequency table and codebook");
     all_options.add(tweaks_options);
   }
-  {
-    po::options_description debug_options("Debug", 100);
-    auto db = debug_options.add_options();
-    db("dump-file", po::value<std::string>()->value_name("<filename>"),
-       "dump detailed information about the Huffman coding process to the <filename>");
-    all_options.add(debug_options);
-  }
   return all_options;
 }
 
@@ -116,20 +103,18 @@ std::string compile_help_message_header() {
       "Huffman coding CLI is a program that allows you to compress and decompress data using the Huffman coding "
       "algorithm.\n"
       "Use the options listed below to customize the program's behavior and achieve your desired output.";
-  std::string usage_example = "echo \"Hello world!\" | huffman --input-stdin -c";
+  std::string usage_example = "echo \"Hello world!\" | huffman -c -v -o compressed";
   std::string compilation = "Description:\n" + brief_description + "\n\nUsage example: " + usage_example;
   return compilation;
 }
 
 std::string compile_version_message() { return "huffman version 0.1.0"; }
 
-void compress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose, bool dump,
-              const std::string& dump_filename) {
+void compress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose) {
   compression_coordinator coordinator;
-  coordinator.perform_compression(input, output, ignore_empty, verbose, dump, dump_filename);
+  coordinator.perform_compression(input, output, ignore_empty, verbose);
 }
 
-void decompress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose, bool dump,
-                const std::string& dump_filename) {
-  std::cout << input << output << ignore_empty << verbose << dump << dump_filename << std::endl;
+void decompress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose) {
+  std::cout << input << output << ignore_empty << verbose << std::endl;
 }

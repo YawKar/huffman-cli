@@ -16,18 +16,15 @@
 namespace fs = boost::filesystem;
 
 void compression_coordinator::perform_compression(const std::string& input_, const std::string& output_,
-                                                  bool ignore_empty_, bool verbose_, bool dump_,
-                                                  const std::string& dump_filename_) {
+                                                  bool ignore_empty_, bool verbose_) {
   if (verbose_) std::cout << "Validating options..." << std::endl;
-  validate_options(input_, output_, dump_, dump_filename_);
+  validate_options(input_, output_);
   if (verbose_) std::cout << "Validation passed!" << std::endl << std::endl;
 
   this->input = input_;
   this->output = output_;
   this->ignore_empty = ignore_empty_;
   this->verbose = verbose_;
-  this->dump = dump_;
-  this->dump_filename = dump_filename_;
 
   if (verbose) {
     std::cout << "Your configuration:" << std::endl;
@@ -35,8 +32,6 @@ void compression_coordinator::perform_compression(const std::string& input_, con
     std::cout << "output source: " << output << std::endl;
     std::cout << "ignore empty data: " << std::boolalpha << ignore_empty << std::endl;
     std::cout << "verbose: " << std::boolalpha << verbose << std::endl;
-    std::cout << "dump: " << std::boolalpha << dump << std::endl;
-    if (dump) std::cout << "dump_filename: " << dump_filename << std::endl;
     std::cout << std::endl;
   }
 
@@ -167,15 +162,11 @@ void compression_coordinator::output_encoded_data(const std::vector<uint8_t>& da
   }
 }
 
-void compression_coordinator::validate_options(const std::string& input_, const std::string& output_, bool dump_,
-                                               const std::string& dump_filename_) {
+void compression_coordinator::validate_options(const std::string& input_, const std::string& output_) {
   if (input_ != "stdin" && !fs::exists(input_)) {
     throw std::runtime_error(fmt::format("Error: input file {} doesn't exist", input_));
   }
   if (output_ != "stdout" && fs::exists(output_)) {
     throw std::runtime_error(fmt::format("Error: output file {} already exists", output_));
-  }
-  if (dump_ && fs::exists(dump_filename_)) {
-    throw std::runtime_error(fmt::format("Error: dump file {} already exists", dump_filename_));
   }
 }
