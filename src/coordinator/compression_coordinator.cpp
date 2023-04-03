@@ -42,6 +42,16 @@ void compression_coordinator::perform_compression(const std::string& input_, con
 
   std::vector<uint8_t> data = read_data_from_input();
   if (verbose) std::cout << "Total data bytes: " << data.size() << std::endl << std::endl;
+  if (data.empty()) {
+    if (verbose) {
+      std::cout << "Input data is empty!" << std::endl;
+    }
+    if (ignore_empty) {
+      return;
+    } else {
+      throw std::runtime_error("Error: input data is empty, consider using --ignore-empty to exit peacefully with 0");
+    }
+  }
 
   huffman algorithm;
   if (verbose) std::cout << "Initializing Huffman..." << std::endl;
@@ -110,8 +120,9 @@ void compression_coordinator::perform_compression(const std::string& input_, con
   std::vector<uint8_t> encoded_data = coder.encode_data_with_codebook(data, algorithm.get_codebook());
   if (verbose) {
     std::cout << fmt::format("Encoded data size: {}", encoded_data.size()) << std::endl;
-    std::cout << fmt::format("Compressed {:.2f}%", 100.0 * static_cast<double>(data.size() - encoded_data.size()) /
-                                                       static_cast<double>(data.size()))
+    std::cout << fmt::format("Compressed {:.2f}%",
+                             100.0 * (static_cast<double>(data.size()) - static_cast<double>(encoded_data.size())) /
+                                 static_cast<double>(data.size()))
               << std::endl;
   }
 
@@ -129,11 +140,16 @@ std::vector<uint8_t> compression_coordinator::read_data_from_input() {
     data.pop_back();
   } else {
     std::ifstream file(input);
-    char c;
-    while (!file.eof() && file.get(c)) {
-      data.push_back(c);
+    file.seekg(0, std::ios::end);
+    if (file.tellg() > 0) {
+      file.clear();
+      file.seekg(0, std::ios::beg);
+      char c;
+      while (!file.eof() && file.get(c)) {
+        data.push_back(c);
+      }
+      data.pop_back();
     }
-    data.pop_back();
   }
   return data;
 }
