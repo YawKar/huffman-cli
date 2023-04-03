@@ -75,7 +75,7 @@ void huffman::compile_codebook() {
           dive_compile_codebook(root->right_child, pos + 1u);
         }
         if (root->left_child == nullptr && root->right_child == nullptr) {
-          m_codebook[root->byte] = std::pair<uint8_t, std::bitset<255>>(pos + 1u, current_code);
+          m_codebook[root->byte] = std::pair<uint8_t, std::bitset<255>>(pos, current_code);
         }
       };
   dive_compile_codebook(m_root, 0);

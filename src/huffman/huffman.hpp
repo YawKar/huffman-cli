@@ -82,7 +82,7 @@ class huffman {
 
   struct node_comparator {
     bool operator()(std::shared_ptr<node> a, std::shared_ptr<node> b) const {
-      return a->frequency_sum < b->frequency_sum;
+      return a->frequency_sum > b->frequency_sum;
     }
   };
 
