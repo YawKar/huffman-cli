@@ -70,6 +70,10 @@ class huffman {
   /// @return A map that represents the codebook.
   std::map<uint8_t, std::pair<uint8_t, std::bitset<255>>> get_codebook();
 
+  /// @brief Clears the internal state. After that it's safe to initialize new data and perform Huffman algorithm
+  /// pipeline.
+  void clear_state();
+
  private:
   enum class state {
     uninitialized,
@@ -85,6 +89,8 @@ class huffman {
       return a->frequency_sum > b->frequency_sum;
     }
   };
+
+  void validate_desired_state(state next_state);
 
   state m_state;
   std::shared_ptr<node> m_root;
