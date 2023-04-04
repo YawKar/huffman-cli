@@ -12,6 +12,9 @@ std::vector<uint8_t> encoder::encode_data_with_codebook(
   for (const auto& [original_byte, entry] : codebook) {
     const auto& [length, code] = entry;
 
+    // original_byte
+    encoded_data.push_back(original_byte);
+
     // length
     encoded_data.push_back(length);
     uint8_t byte_pos = 8;
