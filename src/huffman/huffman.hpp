@@ -74,6 +74,9 @@ class huffman {
   /// pipeline.
   void clear_state();
 
+  static std::shared_ptr<node> build_tree_from_codebook(
+      std::map<uint8_t, std::pair<uint8_t, std::bitset<255>>> codebook);
+
  private:
   enum class state {
     uninitialized,

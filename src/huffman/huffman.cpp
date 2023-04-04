@@ -10,6 +10,32 @@
 
 huffman::huffman() : m_state(state::uninitialized) {}
 
+std::shared_ptr<huffman::node> huffman::build_tree_from_codebook(
+    std::map<uint8_t, std::pair<uint8_t, std::bitset<255>>> codebook) {
+  std::shared_ptr<node> root = std::shared_ptr<node>(new node(0, 0, nullptr, nullptr));
+  std::function<void(std::shared_ptr<node>, uint8_t, const uint8_t, const uint8_t, const std::bitset<255>&)> build =
+      [&build](std::shared_ptr<node> cur, uint8_t pos, const uint8_t original_byte, const uint8_t length,
+               const std::bitset<255>& code) {
+        if (pos == length) {
+          cur->byte = original_byte;
+          return;
+        }
+        if (code[pos]) {
+          cur->right_child =
+              cur->right_child == nullptr ? std::shared_ptr<node>(new node(0, 0, nullptr, nullptr)) : cur->right_child;
+          build(cur->right_child, pos + 1, original_byte, length, code);
+        } else {
+          cur->left_child =
+              cur->left_child == nullptr ? std::shared_ptr<node>(new node(0, 0, nullptr, nullptr)) : cur->left_child;
+          build(cur->left_child, pos + 1, original_byte, length, code);
+        }
+      };
+  for (const auto& [original_byte, entry] : codebook) {
+    build(root, 0, original_byte, entry.first, entry.second);
+  }
+  return root;
+}
+
 void huffman::initialize_data(const std::vector<uint8_t>& data) {
   validate_desired_state(state::initialized);
   this->m_data = data;

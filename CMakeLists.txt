@@ -6,9 +6,11 @@ find_package(fmt REQUIRED)
 find_package(Boost REQUIRED)
 
 set(COMPRESSION_COORDINATOR src/coordinator/compression_coordinator.cpp)
+set(DECOMPRESSION_COORDINATOR src/coordinator/decompression_coordinator.cpp)
 set(ENCODER src/coder/encoder.cpp)
+set(DECODER src/coder/decoder.cpp)
 set(HUFFMAN src/huffman/huffman.cpp)
-set(SRCS src/main.cpp ${HUFFMAN} ${ENCODER} ${COMPRESSION_COORDINATOR})
+set(SRCS src/main.cpp ${HUFFMAN} ${ENCODER} ${DECODER} ${COMPRESSION_COORDINATOR} ${DECOMPRESSION_COORDINATOR})
 
 add_executable(${PROJECT_NAME} ${SRCS})
 

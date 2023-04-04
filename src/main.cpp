@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "coordinator/compression_coordinator.hpp"
+#include "coordinator/decompression_coordinator.hpp"
 
 namespace po = boost::program_options;
 
@@ -116,5 +117,6 @@ void compress(const std::string& input, const std::string& output, bool ignore_e
 }
 
 void decompress(const std::string& input, const std::string& output, bool ignore_empty, bool verbose) {
-  std::cout << input << output << ignore_empty << verbose << std::endl;
+  decompression_coordinator coordinator;
+  coordinator.perform_decompression(input, output, ignore_empty, verbose);
 }
