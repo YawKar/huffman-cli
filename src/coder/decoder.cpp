@@ -44,30 +44,9 @@ std::vector<uint8_t> decoder::decode_data(const std::vector<uint8_t>& data) {
     codebook[original_byte] = std::pair<uint8_t, std::bitset<255>>(length, code);
   }
 
-  std::cout << "codebook sz: " << codebook.size() << '\n';
-
   // Building Huffman tree
 
   const auto root = huffman::build_tree_from_codebook(codebook);
-
-  std::cout << "Huffman tree:" << std::endl;
-  int indent_size = std::max<int>(4, static_cast<int>(std::log10(root->frequency_sum)) + 1);
-  std::function<void(std::shared_ptr<huffman::node>, uint8_t)> deep_print =
-      [&deep_print, indent_size](std::shared_ptr<huffman::node> rt, uint8_t depth) {
-        if (rt->right_child) {
-          deep_print(rt->right_child, depth + 1);
-        }
-        if (rt->left_child == nullptr && rt->right_child == nullptr) {
-          std::cout << std::string(indent_size * depth, ' ') << fmt::format("{} ({})", rt->frequency_sum, rt->byte)
-                    << std::endl;
-        } else {
-          std::cout << std::string(indent_size * depth, ' ') << rt->frequency_sum << std::endl;
-        }
-        if (rt->left_child) {
-          deep_print(rt->left_child, depth + 1);
-        }
-      };
-  deep_print(root, 0);
 
   // Reading data
 
