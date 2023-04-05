@@ -1,15 +1,32 @@
-# conan-template-setup
-Template c++ project with conan setup
+# Huffman coding CLI
+Huffman coding CLI is a command-line program that implements the Huffman coding algorithm for data compression and decompression. You can use it to reduce the size of your data files while preserving their content.
 
-# How to setup and run
-1. Install conan 2.0
-2. [Optional] Create conan profile if you haven't yet: `conan profile detect --force`. This will create new default profile for conan in your system.
-3. Install CMake of version not less than the one that is specified in CMakeLists.txt
-3. `cd` to the root folder of the project
-4. `conan install . --output-folder=build --build=missing`
-5. `cd build`
-6. `cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release`
-7. `cmake --build .`
-8. `./conan_template`
+## How to build and run
+To build and run Huffman coding CLI, you need to have a C++ compiler and the CMake build system installed on your system as well as Conan 2.0. Then, follow these steps:
 
-Now make a tea and eat some cookies. You're awesome.
+1. Clone this repository
+2. `conan install . --output-folder=build --build=missing -s build_type=Release`
+3. `cd build`
+4. `cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release`
+5. `cmake --build . --config Release`
+6. `./huffman --help`
+
+## Usage
+To use Huffman coding CLI, run the huffman executable with the desired options. Here are some usage examples:
+```bash
+# Compress and decompress data from stdin to stdout
+echo "Hello world!" | ./huffman -c | ./huffman -d
+
+# Compress data from stdin to a file and decompress it to stdout
+echo "Hello file!" | ./huffman -c -o compressed_file && ./huffman -d -i compressed_file
+
+# Compress data from a file and decompress it from stdin to stdout
+./huffman -c -i input_file | ./huffman -d
+
+# Compress data from a file and decompress it to another file
+./huffman -c -i input_file -o compressed_file && ./huffman -d -i compressed_file
+```
+For a complete list of options, run `./huffman --help`.
+
+## License
+This program is licensed under the [WTFPL](http://www.wtfpl.net). See the LICENSE file for details.
