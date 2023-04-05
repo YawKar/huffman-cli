@@ -27,6 +27,42 @@ echo "Hello file!" | ./huffman -c -o compressed_file && ./huffman -d -i compress
 ./huffman -c -i input_file -o compressed_file && ./huffman -d -i compressed_file
 ```
 For a complete list of options, run `./huffman --help`.
+```
+$ ./huffman --help
+Description:
+Huffman coding CLI is a program that allows you to compress and decompress data using the Huffman coding algorithm.
+Use the options listed below to customize the program's behavior and achieve your desired output.
+
+Usage examples:
+        echo "Hello world!" | ./huffman -c | ./huffman -d
+        echo "Hello file!" | ./huffman -c -o compressed_file && ./huffman -d -i compressed_file
+        ./huffman -c -i input_file | ./huffman -d
+        ./huffman -c -i input_file -o compressed_file && ./huffman -d -i compressed_file
+        ./huffman -c -i input_file -o compressed_file && ./huffman -d -i compressed_file -o decompressed_file
+
+
+Huffman coding CLI options.:
+  --help                                print a help message that explains the program's usage and 
+                                        available options
+  --version                             print the program's version information
+
+Action options:
+  -c [ --compress ]                     compress the input data and output the compressed data to 
+                                        stdout by default (see '--output' option)
+  -d [ --decompress ]                   decompress the input data and output the decompressed data 
+                                        to stdout by default (see '--output' option)
+
+I/O options:
+  -i [ --input ] <filename> (=stdin)    input file name (if not specified, stdin will be consumed)
+  -o [ --output ] <filename> (=stdout)  specify the output file name for the compressed or 
+                                        decompressed data (if not specified, stdout will be used)
+
+Tweaks:
+  --ignore-empty                        return 0 if input content is empty (don't do anything)
+  -v [ --verbose ]                      print detailed information about the Huffman coding 
+                                        process, including the frequency table and codebook
+
+```
 
 ## License
 This program is licensed under the [WTFPL](http://www.wtfpl.net). See the LICENSE file for details.
