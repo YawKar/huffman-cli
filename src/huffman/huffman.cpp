@@ -72,15 +72,19 @@ void huffman::build_tree() {
   for (const auto& entry : m_sorted_frequencies) {
     all_nodes.push(std::shared_ptr<node>(new node(entry.first, entry.second, nullptr, nullptr)));
   }
-  while (all_nodes.size() > 1) {
-    auto first = all_nodes.top();
-    all_nodes.pop();
-    auto second = all_nodes.top();
-    all_nodes.pop();
-    auto combined = std::shared_ptr<node>(new node(0u, first->frequency_sum + second->frequency_sum, first, second));
-    all_nodes.push(combined);
+  if (all_nodes.size() != 1) {
+    while (all_nodes.size() > 1) {
+      auto first = all_nodes.top();
+      all_nodes.pop();
+      auto second = all_nodes.top();
+      all_nodes.pop();
+      auto combined = std::shared_ptr<node>(new node(0u, first->frequency_sum + second->frequency_sum, first, second));
+      all_nodes.push(combined);
+    }
+    m_root = all_nodes.top();
+  } else {
+    m_root = std::shared_ptr<node>(new node(0, 0, all_nodes.top(), nullptr));
   }
-  m_root = all_nodes.top();
   m_state = state::built_tree;
 }
 
