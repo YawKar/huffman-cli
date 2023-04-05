@@ -104,8 +104,13 @@ std::string compile_help_message_header() {
       "Huffman coding CLI is a program that allows you to compress and decompress data using the Huffman coding "
       "algorithm.\n"
       "Use the options listed below to customize the program's behavior and achieve your desired output.";
-  std::string usage_example = "echo \"Hello world!\" | huffman -c -v -o compressed";
-  std::string compilation = "Description:\n" + brief_description + "\n\nUsage example: " + usage_example;
+  std::string usage_examples =
+      "\techo \"Hello world!\" | ./huffman -c | ./huffman -d\n"
+      "\techo \"Hello file!\" | ./huffman -c -o compressed_file && ./huffman -d -i compressed_file\n"
+      "\t./huffman -c -i input_file | ./huffman -d\n"
+      "\t./huffman -c -i input_file -o compressed_file && ./huffman -d -i compressed_file\n"
+      "\t./huffman -c -i input_file -o compressed_file && ./huffman -d -i compressed_file -o decompressed_file\n";
+  std::string compilation = "Description:\n" + brief_description + "\n\nUsage examples:\n" + usage_examples;
   return compilation;
 }
 
